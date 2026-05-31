@@ -10,48 +10,38 @@ An interactive batch script wrapper that enhances the standard Windows Command P
 * **Recursive Folder Sizing:** Calculates the actual total size of directories (`[DIR]`), including all sub-folders and nested files.
 * **Automatic Sorting:** Automatically sorts the final output by size in descending order (largest items first).
 * **Human-Readable Formats:** Automatically converts byte sizes into cleanly formatted **KB**, **MB**, or **GB**.
-* **Color-Coded Console Output:** 
-  * `[DIR]` is highlighted in **Yellow** 🟨
+* **Color-Coded Console Output:** * `[DIR]` is highlighted in **Yellow** 🟨
   * `[FILE]` is highlighted in **Green** 🟩
 * **Smart Truncation:** Automatically truncates long file or folder names (>35 characters) with `..` to preserve a clean and aligned table layout.
 
 ---
 
+## 📸 Preview
+
+![Script in Action](ls.png)
+
+---
+
 ## 🚀 Installation & Setup
 
-To make this script accessible from any directory in your Command Prompt (just like the native `ls` command in Linux), follow these steps to save it and register it to your system Environment Variables:
+To make this script accessible from any directory in your Command Prompt (just like the native `ls` command in Linux), follow these steps to register your existing `ls.bat` file to your system Environment Variables:
 
-### Step 1: Create the `ls.bat` File Anywhere in Drive C:
-1. Create a folder anywhere inside your **C:** drive to store your custom scripts (for example: `C:\MyScripts` or `C:\bin`).
-2. Inside that folder, create a new text file and name it **`ls.bat`** (make sure the extension is `.bat`, not `.txt`).
-3. Open the file with Notepad, paste the following code, and save it:
+### Step 1: Prepare Your Folder
+1. Make sure your `ls.bat` file is placed inside a dedicated folder anywhere on your **C:** drive (for example: `C:\MyScripts` or `C:\bin`).
 
-```batch
-@echo off
-powershell -NoProfile -Command ^
-  "$path = Get-Location; " ^
-  "Write-Host \"`n [!] ANALYZING STORAGE: $path\" -ForegroundColor Cyan; " ^
-  "Write-Host ' ----------------------------------------------------------------------'; " ^
-  "$items = Get-ChildItem; " ^
-  "$total = $items.Count; $current = 0; $data = @(); " ^
-  "foreach ($obj in $items) { " ^
-    "$current++; $percent = [math]::Round(($current / $total) * 100); " ^
-    "Write-Host (\"`r [*] Scanning: $percent%% [$current/$total] \" + $obj.Name.PadRight(30).Substring(0,30)) -NoNewline -ForegroundColor Gray; " ^
-    "if ($obj.PSIsContainer) { " ^
-      "$size = (Get-ChildItem $obj.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum).Sum; " ^
-      "if (!$size) { $size = 0 }; " ^
-      "$data += [PSCustomObject]@{Type='[DIR] '; Name=$obj.Name; RawSize=$size; Color='Yellow'; SizeCol='DarkYellow'} " ^
-    "} else { " ^
-      "$data += [PSCustomObject]@{Type='[FILE]'; Name=$obj.Name; RawSize=$obj.Length; Color='Green'; SizeCol='Gray'} " ^
-    "} " ^
-  "} " ^
-  "Write-Host \"`r [v] SCAN COMPLETE. SORTING DATA...                         \" -ForegroundColor Cyan; " ^
-  "Write-Host ' ----------------------------------------------------------------------'; " ^
-  "$data | Sort-Object RawSize -Descending | ForEach-Object { " ^
-    "$name = $_.Name; if ($name.Length -gt 35) { $name = $name.Substring(0, 32) + '..' }; " ^
-    "$fmtSize = if ($_.RawSize -ge 1GB) { '{0:N2} GB' -f ($_.RawSize / 1GB) } elseif ($_.RawSize -ge 1MB) { '{0:N2} MB' -f ($_.RawSize / 1MB) } else { '{0:N2} KB' -f ($_.RawSize / 1KB) }; " ^
-    "Write-Host (\" $($_.Type) \") -ForegroundColor $_.Color -NoNewline; " ^
-    "Write-Host (' {0,-35}' -f $name) -NoNewline; " ^
-    "Write-Host ('[{0,9}]' -f $fmtSize) -ForegroundColor $_.SizeCol " ^
-  "}; " ^
-  "Write-Host ' ----------------------------------------------------------------------'"
+### Step 2: Add the Folder to Environment Variables (PATH)
+1. Open the Windows Start Menu, type **`env`**, and select **Edit the system environment variables**.
+2. Click on the **Environment Variables...** button at the bottom right of the window.
+3. In the **User variables** section (top half) or **System variables** section (bottom half), look for the variable named **`Path`** (or `PATH`), select it, and click **Edit...**.
+4. Click the **New** button on the right side.
+5. Type or paste the full path of the folder where your script is stored (e.g., `C:\MyScripts` or `C:\bin`).
+6. Click **OK** on all open windows to apply and save the changes.
+
+---
+
+## 💻 Usage
+
+Open a brand new **Command Prompt (CMD)** window (do not use an already open one, as it needs to load the new environment variables), navigate to any directory you want to inspect, and simply type:
+
+```cmd
+ls
