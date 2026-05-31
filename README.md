@@ -10,7 +10,8 @@ An interactive batch script wrapper that enhances the standard Windows Command P
 * **Recursive Folder Sizing:** Calculates the actual total size of directories (`[DIR]`), including all sub-folders and nested files.
 * **Automatic Sorting:** Automatically sorts the final output by size in descending order (largest items first).
 * **Human-Readable Formats:** Automatically converts byte sizes into cleanly formatted **KB**, **MB**, or **GB**.
-* **Color-Coded Console Output:** * `[DIR]` is highlighted in **Yellow** 🟨
+* **Color-Coded Console Output:** 
+  * `[DIR]` is highlighted in **Yellow** 🟨
   * `[FILE]` is highlighted in **Green** 🟩
 * **Smart Truncation:** Automatically truncates long file or folder names (>35 characters) with `..` to preserve a clean and aligned table layout.
 
@@ -18,11 +19,12 @@ An interactive batch script wrapper that enhances the standard Windows Command P
 
 ## 🚀 Installation & Setup
 
-To make this script accessible from any directory in your Command Prompt (just like the native `ls` command in Linux), follow these steps:
+To make this script accessible from any directory in your Command Prompt (just like the native `ls` command in Linux), follow these steps to save it and register it to your system Environment Variables:
 
-### Step 1: Create the Batch File
-1. Create a new text file named `ls.bat`.
-2. Paste the following code inside it and save:
+### Step 1: Create the `ls.bat` File Anywhere in Drive C:
+1. Create a folder anywhere inside your **C:** drive to store your custom scripts (for example: `C:\MyScripts` or `C:\bin`).
+2. Inside that folder, create a new text file and name it **`ls.bat`** (make sure the extension is `.bat`, not `.txt`).
+3. Open the file with Notepad, paste the following code, and save it:
 
 ```batch
 @echo off
